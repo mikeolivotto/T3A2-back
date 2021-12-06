@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/mikeolivotto/T3A2-back/issues"
   },
-  "homepage": "https://github.com/mikeolivotto/T3A2-back#readme"
+  "homepage": "https://github.com/mikeolivotto/T3A2-back#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase": "^9.6.0",
+    "firebase-admin": "^10.0.0",
+    "jest": "^27.4.3",
+    "mongoose": "^6.0.14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
