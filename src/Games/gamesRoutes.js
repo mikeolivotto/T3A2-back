@@ -2,18 +2,24 @@ const express = require("express");
 
 const routes = express.Router();
 
-routes.get("/", async (request, response) => {});
+routes.get("/", async (request, response) => {
+    response.json({ message: "GET - all games" });
+});
+
+routes.get("/:id", async (request, response) => {
+    response.json({ message: `GET - game with id ${request.params.id}` });
+});
 
 routes.post("/", async (request, response) => {
     response.json({ message: "POST - game created" });
 });
 
-routes.put("/", async (request, response) => {
-    response.json({ message: "PUT - game edited" });
+routes.put("/:id", async (request, response) => {
+    response.json({ message: `PUT - game with id ${request.params.id} edited` });
 });
 
-routes.delete("/", async (request, response) => {
-    response.json({ message: "DELETE - game deleted" });
+routes.delete("/:id", async (request, response) => {
+    response.json({ message: `DELETE - game with id ${request.params.id} deleted` });
 });
 
 
