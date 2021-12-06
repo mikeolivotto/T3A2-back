@@ -1,0 +1,19 @@
+{
+  "name": "t3a2-back",
+  "version": "1.0.0",
+  "description": "Back end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeolivotto/T3A2-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikeolivotto/T3A2-back/issues"
+  },
+  "homepage": "https://github.com/mikeolivotto/T3A2-back#readme"
+}
