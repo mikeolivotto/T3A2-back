@@ -21,7 +21,7 @@ databaseConnector(DATABASE_URI).then(() => {
     `)
 });
 
-// allows app to use 
+// allows app to use json 
 app.use(express.json());
 // Same as above but for form data
 app.use(express.urlencoded({extended:true}));
