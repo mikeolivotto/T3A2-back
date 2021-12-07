@@ -1,10 +1,26 @@
 // import and initialize express as app.
 const express = require("express");
+require('dotenv').config()
 
 const app = express();
 
 PORT = process.env.PORT || 3000;
 HOST = "0.0.0.0";
+
+// Import the database connection function
+const { databaseConnector } = require('./database/database');
+// Establish what the database URL is going to be
+const DATABASE_URI = process.env.DATABASE_URI;
+console.log(DATABASE_URI)
+// Connect to the database using the URL
+databaseConnector(DATABASE_URI).then(() => {
+    console.log("Database connected successfully!");
+}).catch(error => {
+    console.log(`
+    Some error occured connecting to the database! It was: 
+    ${error}
+    `)
+});
 
 app.get("/", (request, response) => {
   response.json({ message: "This is the home route" });
