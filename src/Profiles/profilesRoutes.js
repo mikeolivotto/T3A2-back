@@ -1,4 +1,5 @@
 const express = require("express");
+const { createNewProfile } = require("./profilesFunctions")
 const routes = express.Router();
 
 routes.get("/", async (request, response) => {
@@ -10,7 +11,10 @@ routes.get("/:id", async (request, response) => {
 });
 
 routes.post("/", async (request, response) => {
-  response.json({ message: "POST - profile created" });
+    console.log("route matched post profile")
+    console.log(request.body)
+    let postResult = await createNewProfile(request.body)
+  response.json({ message: `POST - profile created: \n${postResult}` });
 });
 
 routes.put("/:id", async (request, response) => {
