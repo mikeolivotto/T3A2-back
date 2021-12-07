@@ -8,6 +8,13 @@ async function createNewProfile(queryData){
     return newProfileResult
 };
 
+
+// The ".exec()" helps the query just run instead of saving it for re-use.
+async function getSpecificProfile(profileID){
+    let specificProfileQuery = await Profile.findById(profileID).exec();
+    return specificProfileQuery;
+}
+
 module.exports ={
-    createNewProfile
+    createNewProfile, getSpecificProfile
 }

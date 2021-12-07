@@ -1,5 +1,5 @@
 const express = require("express");
-const { createNewProfile } = require("./profilesFunctions")
+const { createNewProfile, getSpecificProfile } = require("./profilesFunctions")
 const routes = express.Router();
 
 routes.get("/", async (request, response) => {
@@ -7,7 +7,8 @@ routes.get("/", async (request, response) => {
 });
 
 routes.get("/:id", async (request, response) => {
-  response.json({ message: `GET - profile with id ${request.params.id}` });
+  let profileResult = await getSpecificProfile(request.params.id)
+  response.json(profileResult);
 });
 
 routes.post("/", async (request, response) => {
