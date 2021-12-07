@@ -7,6 +7,6 @@ const groupSchema = new mongoose.Schema({
     members: Array,
 })
 
-const Group = mongoose.model("Game", groupSchema)
+const Group = mongoose.model("Groups", groupSchema)
 
 module.exports = {Group}

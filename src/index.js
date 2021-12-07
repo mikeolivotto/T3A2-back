@@ -33,12 +33,12 @@ app.get("/", (request, response) => {
 const importedProfileRouting = require("./Profiles/profilesRoutes");
 app.use("/profiles", importedProfileRouting);
 
-const importedGroupsRouting = require("./Groups/groupsRoutes");
-app.use("/Groups", importedGroupsRouting);
+const importedGroupRouting = require("./Groups/groupsRoutes");
+app.use("/group", importedGroupRouting);
 
-const importedGamesRouting = require("./Games/gamesRoutes");
+const importedGameRouting = require("./Games/gamesRoutes");
 const { request } = require("express");
-app.use("/Games", importedGamesRouting);
+app.use("/game", importedGameRouting);
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running on PORT: ${PORT}`);
