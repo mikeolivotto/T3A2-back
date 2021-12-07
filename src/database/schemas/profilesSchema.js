@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const profileSchema = new mongoose.Schema({
-    Username: {type: String, required: true},
-    FirstName: String,
-    LastName: String,
-    Photo: String,
-    FirebaseUserID: String
+    username: {type: String, required: true},
+    firstName: String,
+    lastName: String,
+    photo: String,
+    firebaseUserID: String
 })
 
 const Profile = mongoose.model("Game", profileSchema)

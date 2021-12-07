@@ -11,7 +11,6 @@ HOST = "0.0.0.0";
 const { databaseConnector } = require('./database/database');
 // Establish what the database URL is going to be
 const DATABASE_URI = process.env.DATABASE_URI;
-console.log(DATABASE_URI)
 // Connect to the database using the URL
 databaseConnector(DATABASE_URI).then(() => {
     console.log("Database connected successfully!");
@@ -21,6 +20,11 @@ databaseConnector(DATABASE_URI).then(() => {
     ${error}
     `)
 });
+
+// allows app to use 
+app.use(express.json());
+// Same as above but for form data
+app.use(express.urlencoded({extended:true}));
 
 app.get("/", (request, response) => {
   response.json({ message: "This is the home route" });
