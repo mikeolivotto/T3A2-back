@@ -8,6 +8,6 @@ const profileSchema = new mongoose.Schema({
     firebaseUserID: String
 })
 
-const Profile = mongoose.model("Game", profileSchema)
+const Profile = mongoose.model("Profiles", profileSchema)
 
 module.exports = {Profile}
