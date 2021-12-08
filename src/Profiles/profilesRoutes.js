@@ -1,7 +1,10 @@
 const express = require("express");
-const { createNewProfile, getSpecificProfile } = require("./profilesFunctions");
+const {
+  createNewProfile,
+  getSpecificProfile,
+  signUpUser,
+} = require("./profilesFunctions");
 
-const { signUpUser } = require("./profilesFunctions");
 const routes = express.Router();
 
 routes.post("/sign-up", async (request, response) => {
@@ -10,7 +13,7 @@ routes.post("/sign-up", async (request, response) => {
     password: request.body.password,
   };
 
-  let signUpResult = signUpUser(newProfileDetails);
+  let signUpResult = await signUpUser(newProfileDetails);
 
   if (signUpResult.error != null) {
     console.log("Sign-up error");
