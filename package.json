@@ -23,7 +23,8 @@
     "firebase": "^9.6.0",
     "firebase-admin": "^10.0.0",
     "jest": "^27.4.3",
-    "mongoose": "^6.0.14"
+    "mongoose": "^6.0.14",
+    "save": "^2.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
