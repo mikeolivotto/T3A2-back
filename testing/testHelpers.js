@@ -1,8 +1,9 @@
+const { Profile } = require('../src/database/schemas/profilesSchema');
 const {createNewProfile} = require('../src/Profiles/profilesFunctions')
 
 const setTestData = () => {
     let testProfile = {
-        username: "Test Username",
+        username: "blah",
         firstName: "Testy",
         lastName: "McTestFace",
     }
@@ -10,5 +11,8 @@ const setTestData = () => {
 }
 
 const clearTestData = () => {
-
+    Profile.collection.drop()
 };
+
+
+module.exports = {setTestData, clearTestData}
