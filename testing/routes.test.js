@@ -1,11 +1,12 @@
 const {app} = require("../src/index")
 const request = require("supertest");
+const {setTestData, clearTestData} = require('./testHelpers')
 
 beforeEach(() => {
   setTestData();
 });
 
-afterEach(() => {
+afterAll(() => {
   clearTestData();
 });
 
