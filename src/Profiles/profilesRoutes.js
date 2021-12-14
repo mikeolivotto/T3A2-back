@@ -4,7 +4,7 @@ const {
   getSpecificProfile,
   signUpUser,
   signInUser,
-} = require("./profilesFunctions");
+} = require("./profilesFunctions"); 
 
 const routes = express.Router();
 
