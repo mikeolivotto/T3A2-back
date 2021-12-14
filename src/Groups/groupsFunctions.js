@@ -16,5 +16,27 @@ async function createNewGroup(queryData) {
     return newGroupResult
 }
 
+async function getSpecificGroup(groupId) {
+    let specificGroupQuery = await Group.findById(groupId).exec()
+    return specificGroupQuery
+}
 
-module.exports = {getAllGroups, createNewGroup} 
+async function updateSpecificGroup(groupId, requestBody) {
+    console.log(groupId)
+    console.log(requestBody)
+    let updatedGroup = await Group.updateOne(
+        // find the group with the Group ID in the query data
+        {_id: groupId},
+        // update/set the group object with all the query data
+        { $set: requestBody }
+    )
+    return updatedGroup
+}
+
+async function deleteGroup(groupId) {
+    let deletedGroup = await Group.deleteOne({"_id": groupId})
+    return deletedGroup
+}
+
+
+module.exports = {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup} 
