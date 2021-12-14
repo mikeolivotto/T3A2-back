@@ -1,17 +1,24 @@
 const express = require("express");
+const {getAllGroups, createNewGroup} = require("./groupsFunctions");
 
 const routes = express.Router();
 
 routes.get("/", async (request, response) => {
-    response.json({ message: "GET - all groups" });
+    let groups = await getAllGroups()
+    // response.json({ message: "GET - all groups" });
+    response.json(groups);
 });
 
 routes.get("/:id", async (request, response) => {
     response.json({ message: `GET - group with id ${request.params.id}` });
 });
 
+
+
+
 routes.post("/", async (request, response) => {
-    response.json({ message: "POST - group created" });
+    let newGroup = await createNewGroup(request.body)
+    response.json({ message: `POST - group created: \n ${newGroup}` });
 });
 
 routes.put("/:id", async (request, response) => {
