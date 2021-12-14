@@ -21,7 +21,16 @@ routes.post("/sign-up", async (request, response) => {
     response.json(signUpResult);
     return;
   }
-  response.json(signUpResult);
+
+  let signInResult = await signInUser(newProfileDetails);
+
+  if (signInResult.error != null) {
+    console.log("Sign-in error");
+    response.json(signInResult);
+    return;
+  }
+  response.json([signUpResult, signInResult]);
+
 });
 
 routes.post("/sign-in", async (request, response) => {
