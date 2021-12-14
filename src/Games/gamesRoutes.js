@@ -1,21 +1,26 @@
 const express = require("express");
+const { getAllGames, getSpecificGame, createNewGame, updateGame } = require("./gamesFunctions");
 
 const routes = express.Router();
-
+// Get all Games
 routes.get("/", async (request, response) => {
-    response.json({ message: "GET - all games" });
+    let allGamesResults = await getAllGames();
+    response.json(allGamesResults);
 });
-
+// Get Specific Game
 routes.get("/:id", async (request, response) => {
-    response.json({ message: `GET - game with id ${request.params.id}` });
+    let specificGameResult = await getSpecificGame(request.params.id);
+    response.json(specificGameResult);
 });
-
+// Create New Game
 routes.post("/", async (request, response) => {
-    response.json({ message: "POST - game created" });
+    let newGameResult = await createNewGame(request.body);
+    response.json(newGameResult);
 });
-
+// Edit Game
 routes.put("/:id", async (request, response) => {
-    response.json({ message: `PUT - game with id ${request.params.id} edited` });
+    let updatedGameResult = await updateGame(request.params.id, request.body);
+    response.json(updatedGameResult);
 });
 
 routes.delete("/:id", async (request, response) => {
