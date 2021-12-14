@@ -24,6 +24,8 @@ async function signUpUser(userDetails) {
 async function createNewProfile(queryData) {
   let newProfile = new Profile({
     username: queryData.username,
+    firstName: queryData.firstName || null,
+    lastName: queryData.lastName || null
   });
   let newProfileResult = await newProfile.save();
   return newProfileResult;
