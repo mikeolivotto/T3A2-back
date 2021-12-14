@@ -1,13 +1,15 @@
 const { Profile } = require('../src/database/schemas/profilesSchema');
 const {createNewProfile} = require('../src/Profiles/profilesFunctions')
 
-const setTestData = () => {
+const setTestData = async () => {
     let testProfile = {
         username: "blah",
         firstName: "Testy",
         lastName: "McTestFace",
     }
-    createNewProfile(testProfile)
+
+    let response = await createNewProfile(testProfile)
+    return response
 }
 
 const clearTestData = () => {
