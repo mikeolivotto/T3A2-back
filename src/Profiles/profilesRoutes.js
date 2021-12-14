@@ -3,6 +3,7 @@ const {
   createNewProfile,
   getSpecificProfile,
   signUpUser,
+  signInUser,
 } = require("./profilesFunctions");
 
 const routes = express.Router();
@@ -21,6 +22,16 @@ routes.post("/sign-up", async (request, response) => {
     return;
   }
   response.json(signUpResult);
+});
+
+routes.post("/sign-in", async (request, response) => {
+  let existingProfileDetail = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+  let signInResult = await signInUser(existingProfileDetail);
+
+  response.json(signInResult);
 });
 
 routes.get("/", async (request, response) => {
