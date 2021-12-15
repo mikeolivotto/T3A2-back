@@ -22,11 +22,17 @@ async function signUpUser(userDetails) {
     });
 }
 
+async function getAllProfiles() {
+  let allProfiles = await Profile.find()
+  return allProfiles
+}
+
 async function createNewProfile(queryData) {
   let newProfile = new Profile({
-    username: queryData.username,
+    username: queryData.userName,
     firstName: queryData.firstName || null,
     lastName: queryData.lastName || null,
+    firebaseUserID: queryData.firebaseUserID
   });
   let newProfileResult = await newProfile.save();
   return newProfileResult;
@@ -49,7 +55,7 @@ async function signInUser(queryData) {
     let userIdToken = await firebaseClientAuth.currentUser.getIdTokenResult(
       false
     );
-    console.log(`userIdToken is \n ${JSON.stringify(userIdToken)}`);
+    // console.log(`userIdToken is \n ${JSON.stringify(userIdToken)}`);
     return {
       idToken: userIdToken.token,
       refreshToken: userCredential.user.token,
@@ -64,6 +70,7 @@ async function signInUser(queryData) {
 
 module.exports = {
   createNewProfile,
+  getAllProfiles,
   getSpecificProfile,
   signUpUser,
   signInUser,
