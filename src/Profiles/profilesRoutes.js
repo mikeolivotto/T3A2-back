@@ -77,12 +77,12 @@ routes.get("/:id", async (request, response) => {
   response.json(profileResult);
 });
 
-routes.post("/", async (request, response) => {
-  console.log("route matched post profile");
-  console.log(request.body);
-  let postResult = await createNewProfile(request.body);
-  response.json({ message: `POST - profile created: \n${postResult}` });
-});
+// routes.post("/", async (request, response) => {
+//   console.log("route matched post profile");
+//   console.log(request.body);
+//   let postResult = await createNewProfile(request.body);
+//   response.json({ message: `POST - profile created: \n${postResult}` });
+// });
 
 routes.put("/:id", async (request, response) => {
   response.json({
