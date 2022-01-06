@@ -3,9 +3,10 @@ const {createNewProfile} = require('../src/Profiles/profilesFunctions')
 
 const setTestData = async () => {
     let testProfile = {
-        username: "blah",
+        userName: "blah",
         firstName: "Testy",
         lastName: "McTestFace",
+        // firebaseUserID: "yNR9dQYWZZMLDgAiw2cuSlO5g8r1"
     }
 
     let response = await createNewProfile(testProfile)

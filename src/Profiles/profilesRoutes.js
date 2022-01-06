@@ -32,8 +32,7 @@ routes.post("/sign-up", async (request, response) => {
     lastName: request.body.lastName,
     firebaseUserID: uid
   }
-
-
+  
   console.log(newProfileDetails)
 
   let newProfile = await createNewProfile(newProfileDetails)
@@ -43,8 +42,6 @@ routes.post("/sign-up", async (request, response) => {
     response.json(newProfile);
     return;
   }
-
-  
 
   let signInResult = await signInUser(signUpDetails);
 
