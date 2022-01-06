@@ -1,4 +1,5 @@
 const { Profile } = require("../database/schemas/profilesSchema");
+const { Game } = require("../database/schemas/gamesSchema");
 
 const firebaseClient = require("firebase/app");
 firebaseClient.initializeApp(JSON.parse(process.env.CLIENT_KEY_FIREBASE));
@@ -28,8 +29,9 @@ async function getAllProfiles() {
 }
 
 async function createNewProfile(queryData) {
+  console.log(queryData)
   let newProfile = new Profile({
-    username: queryData.userName,
+    username: queryData.username,
     firstName: queryData.firstName || null,
     lastName: queryData.lastName || null,
     firebaseUserID: queryData.firebaseUserID
@@ -38,11 +40,32 @@ async function createNewProfile(queryData) {
   return newProfileResult;
 }
 
+// async function updateProfile(queryData) {
+//   let profile = new Profile({
+//     username: queryData.userName,
+//     firstName: queryData.firstName || null,
+//     lastName: queryData.lastName || null,
+//     firebaseUserID: queryData.firebaseUserID
+//   });
+//   let newProfileResult = await newProfile.save();
+//   return newProfileResult;
+// }
+
+
 // The ".exec()" helps the query just run instead of saving it for re-use.
 async function getSpecificProfile(profileID) {
   let specificProfileQuery = await Profile.findById(profileID).exec();
   return specificProfileQuery;
 }
+
+
+async function getGamesByProfile(profileID) {
+  let profile = await getSpecificProfile(profileID)
+  let id = profile._id
+  let profileGames = await Game.find({ players: id }); // Find games where "players" includes the specific player
+  return profileGames;
+}
+
 
 async function signInUser(queryData) {
   const firebaseClientAuth = getAuth();
@@ -74,4 +97,5 @@ module.exports = {
   getSpecificProfile,
   signUpUser,
   signInUser,
+  getGamesByProfile
 };
