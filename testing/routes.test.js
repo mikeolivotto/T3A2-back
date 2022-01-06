@@ -45,13 +45,13 @@ afterAll(() => {
 
 
 describe('Profiles routes', function() {
-    it(' GET / responds with json & status 200', function(done) {
+    it(' GET /profiles/ responds with json & status 200', function(done) {
       request(app)
         .get('/profiles')
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
-    it("GET /:id responds with json & status 200", (done) => {
+    it("GET /profiles/:id responds with json & status 200", (done) => {
         request(app)
             .get(`/profiles/${testId}`)
             .expect('Content-Type', /json/)
