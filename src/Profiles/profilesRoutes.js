@@ -5,11 +5,13 @@ const {
   getSpecificProfile,
   signUpUser,
   signInUser,
-  getAllProfiles
+  getAllProfiles,
+  getGamesByProfile
 } = require("./profilesFunctions"); 
 
 const routes = express.Router();
 
+// SIGN UP - NB: FRONT END MUST REQUEST userName, firstName, lastName
 routes.post("/sign-up", async (request, response) => {
   let signUpDetails = {
     email: request.body.email,
@@ -27,7 +29,7 @@ routes.post("/sign-up", async (request, response) => {
   let {uid, email} = signUpResult
 
   let newProfileDetails = {
-    userName: request.body.userName,
+    username: request.body.username,
     firstName: request.body.firstName,
     lastName: request.body.lastName,
     firebaseUserID: uid
@@ -54,6 +56,7 @@ routes.post("/sign-up", async (request, response) => {
 
 });
 
+// SIGN IN TO A PROFILE
 routes.post("/sign-in", async (request, response) => {
   let existingProfileDetail = {
     email: request.body.email,
@@ -64,33 +67,38 @@ routes.post("/sign-in", async (request, response) => {
   response.json(signInResult);
 });
 
+// GET ALL PROFILES
 routes.get("/", async (request, response) => {
   let allProfiles = await getAllProfiles()
   response.json(allProfiles);
 });
 
+// GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
   let profileResult = await getSpecificProfile(request.params.id);
   response.json(profileResult);
 });
 
-// routes.post("/", async (request, response) => {
-//   console.log("route matched post profile");
-//   console.log(request.body);
-//   let postResult = await createNewProfile(request.body);
-//   response.json({ message: `POST - profile created: \n${postResult}` });
+// UPDATE A SPECIFIC PROFILE
+// routes.put("/:id", async (request, response) => {
+//   let profile = await getSpecificProfile(request.params.id);
+//   updateProfile(profile, request) //need to create an updateProfile helper function for this to work
+//   response.json({
+//     message: `PUT - profile with id ${request.params.id} updated`,
+//   });
 // });
 
-routes.put("/:id", async (request, response) => {
-  response.json({
-    message: `PUT - profile with id ${request.params.id} edited`,
-  });
-});
+// DELETE A SPECIFIC PROFILE
+// routes.delete("/:id", async (request, response) => {
+//   response.json({
+//     message: `DELETE - profile with id ${request.params.id} deleted`,
+//   });
+// });
 
-routes.delete("/:id", async (request, response) => {
-  response.json({
-    message: `DELETE - profile with id ${request.params.id} deleted`,
-  });
+// GET A SPECIFIC PROFILE'S ASSOCIATED GAMES
+routes.get("/:id/games", async (request, response) => {
+  let games = await getGamesByProfile(request.params.id);
+  response.json(games);
 });
 
 module.exports = routes;
