@@ -75,6 +75,13 @@ async function getJoinedGroupsByProfile(profileID) {
   return profileJoinedGroups
 }
 
+// returns array of groups where input profile is the group admin
+async function getAdminGroupsByProfile(profileID) {
+  let profile = await getSpecificProfile(profileID)
+  let id = profile._id
+  let profileAdministeredGroups = await Group.find({ adminID: id });
+  return profileAdministeredGroups
+}
 
 async function signInUser(queryData) {
   const firebaseClientAuth = getAuth();
