@@ -1,5 +1,6 @@
 const { Profile } = require("../database/schemas/profilesSchema");
 const { Game } = require("../database/schemas/gamesSchema");
+const { Group } = require("../database/schemas/groupsSchema")
 
 const firebaseClient = require("firebase/app");
 firebaseClient.initializeApp(JSON.parse(process.env.CLIENT_KEY_FIREBASE));
@@ -58,12 +59,20 @@ async function getSpecificProfile(profileID) {
   return specificProfileQuery;
 }
 
-
+// returns array of games where the input profile is a player.
 async function getGamesByProfile(profileID) {
   let profile = await getSpecificProfile(profileID)
   let id = profile._id
   let profileGames = await Game.find({ players: id }); // Find games where "players" includes the specific player
   return profileGames;
+}
+
+// returns array of groups where the input profile is a member.
+async function getJoinedGroupsByProfile(profileID) {
+  let profile = await getSpecificProfile(profileID)
+  let id = profile._id
+  let profileJoinedGroups = await Group.find({ members: id }); // Find Groups where "members" includes the specific profile
+  return profileJoinedGroups
 }
 
 
