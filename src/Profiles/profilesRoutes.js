@@ -1,5 +1,7 @@
 const express = require("express");
-const { getMultiFactorResolver } = require("firebase/auth");
+const firebaseAdmin = require("firebase-admin")
+const { getMultiFactorResolver, getAuth } = require("firebase/auth");
+const { Profile } = require("../database/schemas/profilesSchema");
 const {
   createNewProfile,
   getSpecificProfile,
@@ -63,8 +65,17 @@ routes.post("/sign-in", async (request, response) => {
     password: request.body.password,
   };
   let signInResult = await signInUser(existingProfileDetail);
-
-  response.json(signInResult);
+  
+  // uses admin sdk to decode idToken JWT that is returned from signInUser and query database for profile matching uid
+  let userProfile = await firebaseAdmin.auth().verifyIdToken(signInResult.idToken)
+                             .then(async (decodedToken) => {
+                               const profile = await Profile.find({ firebaseUserID: decodedToken.uid })
+                               return profile
+                             })
+                             .catch((error) => {
+                               console.log(`$error decoding firebase JWT: ${error}`)
+                             })
+  response.json([signInResult, userProfile]);
 });
 
 // GET ALL PROFILES
