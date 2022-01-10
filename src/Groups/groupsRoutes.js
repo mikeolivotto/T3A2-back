@@ -1,21 +1,47 @@
 const express = require("express");
 const {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup} = require("./groupsFunctions");
 
+const {
+    tokenAuth
+  } = require("../Profiles/profilesFunctions"); 
+
 const routes = express.Router();
 
+// COMMENT OUT THIS CODE BEFORE PRODUCTION
 routes.get("/", async (request, response) => {
     let groups = await getAllGroups()
     response.json(groups);
 });
 
+
 routes.post("/", async (request, response) => {
-    let newGroup = await createNewGroup(request.body)
-    response.json(newGroup);
+    // check that user is logged in - can only create group if a valid user
+    let userProfile = await tokenAuth(request.headers.bearer)
+
+    // check admin id passed in from react state === auth user id
+    if (request.body.adminId === userProfile[0]._id.toString()){
+        let newGroup = await createNewGroup(request.body)
+        response.json(newGroup);
+    } else {
+        response.json({message: "You are not authorised to create a group"})
+    }
+
+
 });
 
 routes.get("/:id", async (request, response) => {
-    let groupResult = await getSpecificGroup(request.params.id)
-    response.json(groupResult);
+    // get specific group only if you belong to that group
+    let userProfile = await tokenAuth(request.headers.bearer)
+
+    // check if current user is admin || member, return group data
+    if ((request.body.adminId === userProfile[0]._id.toString()) || request.body.members.includes(userProfile[0]._id.toString())) {
+        let groupResult = await getSpecificGroup(request.params.id)
+        response.json(groupResult);
+    } else {
+        response.json({message: "You are not authorised to create a group"})
+    }
+
+
 });
 
 
