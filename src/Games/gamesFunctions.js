@@ -1,5 +1,6 @@
 const { request } = require("express");
-const {Game} = require("../database/schemas/gamesSchema");
+const { Game } = require("../database/schemas/gamesSchema");
+const { getSpecificGroup } = require("../Groups/groupsFunctions")
 
 // Returns All games from Game collection
 const getAllGames = async () => {
@@ -29,15 +30,23 @@ const createNewGame = async (requestBody) => {
 
 const updateGame = async (gameId, requestBody) => {
     let updatedGame = Game.updateOne(
-        {_id: gameId},
-        {$set: requestBody}
+        { _id: gameId },
+        { $set: requestBody }
     )
     return updatedGame
 };
+
+async function getGamesByGroup(groupID) {
+    let group = await getSpecificGroup(groupID)
+    let id = group._id
+    let groupGames = await Game.find({ groupID: id }); // Find games where "players" includes the specific player
+    return groupGames;
+}
 
 module.exports = {
     getAllGames,
     getSpecificGame,
     createNewGame,
-    updateGame
+    updateGame,
+    getGamesByGroup
 }
