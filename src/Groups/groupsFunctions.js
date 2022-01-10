@@ -1,5 +1,9 @@
 const { Group } = require("../database/schemas/groupsSchema")
 
+const {
+    getSpecificProfile,
+  } = require("../Profiles/profilesFunctions"); 
+
 async function getAllGroups() {
     let allGroups = await Group.find()
     return allGroups
@@ -55,4 +59,4 @@ async function getAdminGroupsByProfile(profileID) {
 }
 
 
-module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup } 
+module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getJoinedGroupsByProfile, getAdminGroupsByProfile } 

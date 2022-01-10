@@ -92,11 +92,25 @@ async function signInUser(queryData) {
   return signInResult;
 }
 
+async function tokenAuth(idToken) {
+  const auth = await firebaseAdmin.auth().verifyIdToken(idToken)
+                             .then(async (decodedToken) => {
+                               const profile = await Profile.find({ firebaseUserID: decodedToken.uid })
+                               return profile
+                             })
+                             .catch((error) => {
+                               console.log(`$error decoding firebase JWT: ${error}`)
+                             })
+
+return auth
+}
+
 module.exports = {
   createNewProfile,
   getAllProfiles,
   getSpecificProfile,
   signUpUser,
   signInUser,
-  getGamesByProfile
+  getGamesByProfile,
+  tokenAuth
 };
