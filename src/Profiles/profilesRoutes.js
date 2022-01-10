@@ -106,12 +106,12 @@ routes.get("/:id", async (request, response) => {
       groupsJoined: groups,
       adminOf: adminOf
     })
+    // else send some kind of rejection
   } else {
     response.json({message: "You are not authorised to access that profile"})
   }
 
 
-  // else send some kind of rejection
 
 
 });
@@ -132,10 +132,10 @@ routes.get("/:id", async (request, response) => {
 //   });
 // });
 
-// GET A SPECIFIC PROFILE'S ASSOCIATED GAMES
-routes.get("/:id/games", async (request, response) => {
-  let games = await getGamesByProfile(request.params.id);
-  response.json(games);
-});
+// GET A SPECIFIC PROFILE'S ASSOCIATED GAMES - DEACTIVATING UNTIL A SPECIFIC ROUTE IS NECESSARY
+// routes.get("/:id/games", async (request, response) => {
+//   let games = await getGamesByProfile(request.params.id);
+//   response.json(games);
+// });
 
 module.exports = routes;
