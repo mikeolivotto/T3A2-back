@@ -1,4 +1,5 @@
 const express = require("express");
+const { getSpecificGroup } = require("../Groups/groupsFunctions");
 const {
   getAllGames,
   getSpecificGame,
@@ -22,7 +23,6 @@ routes.get("/:id", async (request, response) => {
   let specificGameResult = await getSpecificGame(request.params.id);
 
   //check if user profile is included in players
-
   if (specificGameResult.players.includes(userProfile[0]._id.toString())) {
     response.json(specificGameResult);
   } else {
@@ -32,9 +32,25 @@ routes.get("/:id", async (request, response) => {
 
 // Create New Game
 routes.post("/", async (request, response) => {
-  let newGameResult = await createNewGame(request.body);
-  response.json(newGameResult);
+  let userProfile = await tokenAuth(request.headers.bearer);
+  console.log(userProfile);
+
+  // check if player is part of the group
+  let speficificgroup = await getSpecificGroup(request.body.groupId);
+
+  if (
+    speficificgroup.groupId.includes(userProfile[0]._id.toString()) ||
+    speficificgroup.adminId === userProfile[0]._id.toString()
+  ) {
+    let newGameResult = await createNewGame(request.body);
+    response.json(newGameResult);
+  } else {
+    response.json({
+      message: "You cannot create a game, as you are not a part of the group",
+    });
+  }
 });
+
 // Edit Game
 routes.put("/:id", async (request, response) => {
   let updatedGameResult = await updateGame(request.params.id, request.body);
