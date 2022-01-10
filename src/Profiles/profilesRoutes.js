@@ -8,8 +8,11 @@ const {
   signUpUser,
   signInUser,
   getAllProfiles,
-  getGamesByProfile
+  getGamesByProfile,
+  tokenAuth
 } = require("./profilesFunctions"); 
+
+const {getJoinedGroupsByProfile, getAdminGroupsByProfile} = require("../Groups/groupsFunctions")
 
 const routes = express.Router();
 
@@ -67,15 +70,14 @@ routes.post("/sign-in", async (request, response) => {
   let signInResult = await signInUser(existingProfileDetail);
   
   // uses admin sdk to decode idToken JWT that is returned from signInUser and query database for profile matching uid
-  let userProfile = await firebaseAdmin.auth().verifyIdToken(signInResult.idToken)
-                             .then(async (decodedToken) => {
-                               const profile = await Profile.find({ firebaseUserID: decodedToken.uid })
-                               return profile
-                             })
-                             .catch((error) => {
-                               console.log(`$error decoding firebase JWT: ${error}`)
-                             })
-  response.json([signInResult, userProfile]);
+  let userProfile = await tokenAuth(signInResult.idToken)
+
+  if(userProfile) {
+    response.json([signInResult, userProfile]);
+  } else {
+    response.json({message: "Invalid ID token"})
+  }
+  
 });
 
 // GET ALL PROFILES
@@ -86,8 +88,32 @@ routes.get("/", async (request, response) => {
 
 // GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
-  let profileResult = await getSpecificProfile(request.params.id);
-  response.json(profileResult);
+  // verify the id token
+ 
+  let userProfile = await tokenAuth(request.headers.bearer)
+  console.log(userProfile)
+
+  // if token verified, check the user id matches the parameter id to get profile data
+  if (request.params.id === userProfile[0]._id.toString()) {
+    let profileResult = await getSpecificProfile(request.params.id);
+    let games = await getGamesByProfile(request.params.id);
+    let groups = await getJoinedGroupsByProfile(request.params.id)
+    let adminOf = await getAdminGroupsByProfile(request.params.id)
+
+    response.json({
+      profile: profileResult,
+      games: games,
+      groupsJoined: groups,
+      adminOf: adminOf
+    })
+  } else {
+    response.json({message: "You are not authorised to access that profile"})
+  }
+
+
+  // else send some kind of rejection
+
+
 });
 
 // UPDATE A SPECIFIC PROFILE
