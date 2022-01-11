@@ -7,6 +7,7 @@ const {
   updateGame,
   getGamesByGroup,
 } = require("./gamesFunctions");
+const { tokenAuth } = require("../Profiles/profilesFunctions")
 
 const routes = express.Router();
 // Get all Games
@@ -36,11 +37,11 @@ routes.post("/", async (request, response) => {
   console.log(userProfile);
 
   // check if player is part of the group
-  let speficificgroup = await getSpecificGroup(request.body.groupId);
-
+  let specificGroup = await getSpecificGroup(request.body.groupId);
+  console.log(specificGroup);
   if (
-    speficificgroup.groupId.includes(userProfile[0]._id.toString()) ||
-    speficificgroup.adminId === userProfile[0]._id.toString()
+    specificGroup.members.includes(userProfile[0]._id.toString()) ||
+    specificGroup.adminId.toString() === userProfile[0]._id.toString()
   ) {
     let newGameResult = await createNewGame(request.body);
     response.json(newGameResult);
