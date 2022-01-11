@@ -89,8 +89,7 @@ routes.get("/", async (request, response) => {
 // GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
   // verify the id token
- 
-  let userProfile = await tokenAuth(request.headers.bearer)
+  let userProfile = await tokenAuth(request.headers.authorization)
   console.log(userProfile)
 
   // if token verified, check the user id matches the parameter id to get profile data
@@ -100,12 +99,12 @@ routes.get("/:id", async (request, response) => {
     let groups = await getJoinedGroupsByProfile(request.params.id)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
 
-    response.json({
-      profile: profileResult,
-      games: games,
-      groupsJoined: groups,
-      adminOf: adminOf
-    })
+    response.json([
+      profileResult,
+      games,
+      groups,
+      adminOf
+    ])
     // else send some kind of rejection
   } else {
     response.json({message: "You are not authorised to access that profile"})
