@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const app = express();
 
-PORT = process.env.PORT || 3000;
+PORT = process.env.PORT || 5000;
 HOST = "0.0.0.0";
 
 const firebaseAdmin = require("firebase-admin");

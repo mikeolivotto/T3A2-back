@@ -18,7 +18,7 @@ const getSpecificGame = async (gameId) => {
 const createNewGame = async (requestBody) => {
     let newGame = new Game({
         gameName: requestBody.gameName,
-        // groupID: requestBody.groupID,
+        groupId: requestBody.groupId,
         gameRules: requestBody.gameRules,
         players: requestBody.players,
         // datePlayed: requestBody.datePlayed
