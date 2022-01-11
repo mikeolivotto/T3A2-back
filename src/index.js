@@ -1,6 +1,7 @@
 // import and initialize express as app.
 const express = require("express");
 require("dotenv").config();
+var cors = require('cors')
 
 const app = express();
 
@@ -39,6 +40,10 @@ databaseConnector(DATABASE_URI)
     ${error}
     `);
   });
+
+
+  // cors policy
+  app.use(cors())
 
 // allows app to use json
 app.use(express.json());
