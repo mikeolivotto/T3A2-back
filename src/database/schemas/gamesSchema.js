@@ -7,6 +7,7 @@ const gamesSchema = new mongoose.Schema({
   gameRules: Object,
   players: Array,
   datePlayed: Date,
+  winner: String
 });
 
 const Game = mongoose.model("Game", gamesSchema);

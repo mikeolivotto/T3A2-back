@@ -103,7 +103,7 @@ routes.get("/:id", async (request, response) => {
       profileResult,
       games,
       groups,
-      adminOf
+      adminOf,
     ])
     // else send some kind of rejection
   } else {
