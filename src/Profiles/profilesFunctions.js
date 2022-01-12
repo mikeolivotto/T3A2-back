@@ -1,6 +1,7 @@
 const { Profile } = require("../database/schemas/profilesSchema");
 const { Game } = require("../database/schemas/gamesSchema");
 const { Group } = require("../database/schemas/groupsSchema")
+var ObjectId = require('mongodb').ObjectId;
 
 const firebaseClient = require("firebase/app");
 firebaseClient.initializeApp(JSON.parse(process.env.CLIENT_KEY_FIREBASE));
@@ -61,11 +62,19 @@ async function getSpecificProfile(profileID) {
 
 // returns array of games where the input profile is a player.
 async function getGamesByProfile(profileID) {
-  let profile = await getSpecificProfile(profileID)
-  let id = profile._id
-  let profileGames = await Game.find({ players: id }); // Find games where "players" includes the specific player
-  return profileGames;
+  // let profile = await getSpecificProfile(profileID)
+  // let id = profile._id
+  let profileGames = await Game.find({ players: new ObjectId(profileID) }); // Find games where "players" includes the specific player
+  let gamesWon = await Game.find({ winner: new ObjectId(profileID) }) // Find games where winner includes specific player
+  return {gamesPlayed: profileGames, gamesWon: gamesWon};
 }
+
+// async function gamesWon(profileID) {
+//   let profile = await getSpecificProfile(profileID)
+//   let id = profile._id
+//   let profileGames = await Game.find({ players: id }); // Find games where "players" includes the specific player
+//   return profileGames;
+// }
 
 
 async function signInUser(queryData) {
