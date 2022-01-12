@@ -1,4 +1,5 @@
 const { Group } = require("../database/schemas/groupsSchema")
+const { Game } = require("../database/schemas/gamesSchema");
 
 const {
     getSpecificProfile,
@@ -23,6 +24,13 @@ async function createNewGroup(queryData) {
 async function getSpecificGroup(groupId) {
     let specificGroupQuery = await Group.findById(groupId).exec()
     return specificGroupQuery
+}
+
+async function getGamesByGroup(groupID) {
+    let group = await getSpecificGroup(groupID)
+    let id = group._id
+    let groupGames = await Game.find({ groupId: id }); // Find games where "groupid" includes the specific group
+    return groupGames;
 }
 
 async function updateSpecificGroup(groupId, requestBody) {
@@ -59,4 +67,4 @@ async function getAdminGroupsByProfile(profileID) {
 }
 
 
-module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getJoinedGroupsByProfile, getAdminGroupsByProfile } 
+module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getJoinedGroupsByProfile, getAdminGroupsByProfile, getGamesByGroup } 

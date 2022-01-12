@@ -1,5 +1,5 @@
 const express = require("express");
-const {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup} = require("./groupsFunctions");
+const {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getGamesByGroup} = require("./groupsFunctions");
 
 const {
     tokenAuth
@@ -32,16 +32,26 @@ routes.post("/", async (request, response) => {
 routes.get("/:id", async (request, response) => {
     // get specific group only if you belong to that group
     let userProfile = await tokenAuth(request.headers.authorization)
+    console.log(userProfile)
 
     let groupResult = await getSpecificGroup(request.params.id)
+    let games = await getGamesByGroup(request.params.id)
  
-    // check if current user is admin || member, return group data
+    // // check if current user is admin || member, return group data
     if ((groupResult.adminId.toString() === userProfile[0]._id.toString()) || groupResult.members.includes(userProfile[0]._id.toString())) {
         response.json(groupResult);
     } else {
         response.json({message: "You are not authorised to get a group"})
     }
+});
 
+routes.get("/:id/games", async (request, response) => {
+    // get specific group only if you belong to that group
+    // let userProfile = await tokenAuth(request.headers.authorization)
+    // console.log(userProfile)
+
+    let games = await getGamesByGroup(request.params.id)
+    response.json(games);
 
 });
 

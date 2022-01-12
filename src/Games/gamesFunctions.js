@@ -39,7 +39,7 @@ const updateGame = async (gameId, requestBody) => {
 async function getGamesByGroup(groupID) {
     let group = await getSpecificGroup(groupID)
     let id = group._id
-    let groupGames = await Game.find({ groupID: id }); // Find games where "players" includes the specific player
+    let groupGames = await Game.find({ groupID: id }); // Find games where "groupid" includes the specific group
     return groupGames;
 }
 
