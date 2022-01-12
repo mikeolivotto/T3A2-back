@@ -59,7 +59,7 @@ routes.post("/sign-up", async (request, response) => {
     response.json(signInResult);
     return;
   }
-  response.json([signInResult, newProfile]);
+  response.json([signInResult, [newProfile]]);
 
 });
 
