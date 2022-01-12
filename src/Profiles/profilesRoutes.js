@@ -9,7 +9,8 @@ const {
   signInUser,
   getAllProfiles,
   getGamesByProfile,
-  tokenAuth
+  tokenAuth,
+  checkUnique
 } = require("./profilesFunctions"); 
 
 const {getJoinedGroupsByProfile, getAdminGroupsByProfile} = require("../Groups/groupsFunctions")
@@ -18,6 +19,7 @@ const routes = express.Router();
 
 // SIGN UP - NB: FRONT END MUST REQUEST userName, firstName, lastName
 routes.post("/sign-up", async (request, response) => {
+  console.log("hit /sign-up route <-------------")
   let signUpDetails = {
     email: request.body.email,
     password: request.body.password,
@@ -57,7 +59,7 @@ routes.post("/sign-up", async (request, response) => {
     response.json(signInResult);
     return;
   }
-  response.json([signUpResult, signInResult]);
+  response.json([signInResult, newProfile]);
 
 });
 
@@ -70,6 +72,7 @@ routes.post("/sign-in", async (request, response) => {
   let signInResult = await signInUser(existingProfileDetail);
   
   // uses admin sdk to decode idToken JWT that is returned from signInUser and query database for profile matching uid
+  console.log("checking token Validity")
   let userProfile = await tokenAuth(signInResult.idToken)
 
   if(userProfile) {
@@ -85,6 +88,19 @@ routes.get("/", async (request, response) => {
   let allProfiles = await getAllProfiles()
   response.json(allProfiles);
 });
+
+// GET a boolean response based on uniqueness of input username
+routes.get("/unique", async (request, response) => {
+  console.log("Hit /unique route <-----------------")
+  let username = request.body.username;
+  console.log(username)
+  let unique = await checkUnique(username)
+  if (unique) {
+    response.json({unique: true})
+  } else {
+    response.json({unique: false})
+  }
+})
 
 // GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
@@ -110,10 +126,9 @@ routes.get("/:id", async (request, response) => {
     response.json({message: "You are not authorised to access that profile"})
   }
 
-
-
-
 });
+
+
 
 // UPDATE A SPECIFIC PROFILE
 // routes.put("/:id", async (request, response) => {

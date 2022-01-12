@@ -105,6 +105,11 @@ async function tokenAuth(idToken) {
 return auth
 }
 
+async function checkUnique(username) {
+  const usernameCheck = await Profile.find({ username: username });
+  return (usernameCheck.length === 0) ? true : false
+}
+
 module.exports = {
   createNewProfile,
   getAllProfiles,
@@ -112,5 +117,6 @@ module.exports = {
   signUpUser,
   signInUser,
   getGamesByProfile,
-  tokenAuth
+  tokenAuth,
+  checkUnique
 };
