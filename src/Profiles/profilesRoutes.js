@@ -102,8 +102,8 @@ routes.get("/:id", async (request, response) => {
     response.json([
       profileResult,
       games,
-      groups,
-      adminOf,
+      groups, // groups user is a part of but NOT an admin
+      adminOf, // groups user in admin of
     ])
     // else send some kind of rejection
   } else {
