@@ -14,6 +14,7 @@ async function createNewGroup(queryData) {
     let newGroup = new Group({
         groupName: queryData.groupName,
         adminId: queryData.adminId,
+        joinCode: queryData.joinCode,
         members: queryData.members
     })
 
@@ -66,5 +67,16 @@ async function getAdminGroupsByProfile(profileID) {
     return profileAdministeredGroups
 }
 
+async function getGroupByJoinCode(joinCode) {
+    let groupMatch = await Group.find({joinCode: joinCode});
+    return (groupMatch.length) ? groupMatch[0] : null
+}
 
-module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getJoinedGroupsByProfile, getAdminGroupsByProfile, getGamesByGroup } 
+async function checkJoinCodeUnique(joinCode) {
+    let joinCodeMatch = await Group.find({joinCode: joinCode});
+    console.log(`${joinCodeMatch} <----------------------`)
+    return (joinCodeMatch.length === 0) ? true : false;
+}
+
+
+module.exports = { getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getJoinedGroupsByProfile, getAdminGroupsByProfile, getGamesByGroup, getGroupByJoinCode, checkJoinCodeUnique } 
