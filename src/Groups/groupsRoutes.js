@@ -16,7 +16,7 @@ routes.get("/", async (request, response) => {
 
 routes.post("/", async (request, response) => {
     // check that user is logged in - can only create group if a valid user
-    let userProfile = await tokenAuth(request.headers.bearer)
+    let userProfile = await tokenAuth(request.headers.authorization)
 
     // check admin id passed in from react state === auth user id
     if (request.body.adminId === userProfile[0]._id.toString()){
