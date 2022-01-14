@@ -1,5 +1,5 @@
 const express = require("express");
-const {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getGamesByGroup} = require("./groupsFunctions");
+const {getAllGroups, createNewGroup, getSpecificGroup, updateSpecificGroup, deleteGroup, getGamesByGroup, checkJoinCodeUnique, getGroupByJoinCode} = require("./groupsFunctions");
 
 const {
     tokenAuth
@@ -13,20 +13,47 @@ routes.get("/", async (request, response) => {
     response.json(groups);
 });
 
-
+// POST - Create new group
 routes.post("/", async (request, response) => {
     // check that user is logged in - can only create group if a valid user
     let userProfile = await tokenAuth(request.headers.authorization)
 
+    // Validation check for joinCode uniqueness
+    let uniqueJoinCode = await checkJoinCodeUnique(request.body.joinCode)
+    if (!uniqueJoinCode) return response.json({message: "Join code is not unqiue, please choose another"});
+
+
     // check admin id passed in from react state === auth user id
     if (request.body.adminId === userProfile[0]._id.toString()){
         let newGroup = await createNewGroup(request.body)
+        console.log(`Join Token of new group = ${newGroup.joinCode}`)
         response.json(newGroup);
     } else {
         response.json({message: "You are not authorised to create a group"})
     }
 
+});
 
+// PUT - update group with member via joincode.
+routes.put("/join", async (request, response) => {
+    // Validate token and return error message if invalid
+    let userProfile = await tokenAuth(request.headers.authorization);
+    if (!userProfile) return response.json({message: "Invalid Credentials, Please sign-in"});
+
+    // Get group via joincode, return error if user is already a member of group
+    let groupMatch = await getGroupByJoinCode(request.body.joinCode);
+    if (groupMatch.members.includes(userProfile[0].username)) return response.json({message: "Error: You are already a member of this group"});
+
+    // if successful joinCode match, add username to members and update group, else could not find group error message.
+    if (groupMatch) {
+        let groupId = groupMatch._id;
+        groupMatch.members.push(String(userProfile[0].username));
+        let updatedGroup = await updateSpecificGroup(groupId,groupMatch);
+        response.json({groupId: groupId});
+    } else {
+        response.json({message: "Error: Could not find group using that join code"});
+    }
+    
 });
 
 routes.get("/:id", async (request, response) => {
