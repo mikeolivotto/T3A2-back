@@ -18,6 +18,7 @@ routes.post("/", async (request, response) => {
     // check that user is logged in - can only create group if a valid user
     let userProfile = await tokenAuth(request.headers.authorization)
 
+    // Validation check for joinCode uniqueness
     let uniqueJoinCode = await checkJoinCodeUnique(request.body.joinCode)
     if (!uniqueJoinCode) return response.json({message: "Join code is not unqiue, please choose another"});
 
@@ -30,7 +31,6 @@ routes.post("/", async (request, response) => {
     } else {
         response.json({message: "You are not authorised to create a group"})
     }
-
 
 });
 
