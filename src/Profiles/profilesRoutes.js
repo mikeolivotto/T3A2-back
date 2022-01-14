@@ -86,7 +86,9 @@ routes.post("/sign-in", async (request, response) => {
 // GET ALL PROFILES
 routes.get("/", async (request, response) => {
   let allProfiles = await getAllProfiles()
-  response.json(allProfiles);
+  let allUsernames = []
+  allProfiles.map(username => allUsernames.push(username.username))
+  response.json({usernames: allUsernames});
 });
 
 // GET a boolean response based on uniqueness of input username
