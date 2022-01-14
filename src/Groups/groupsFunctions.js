@@ -63,7 +63,7 @@ async function getJoinedGroupsByProfile(profileID) {
 async function getAdminGroupsByProfile(profileID) {
     let profile = await getSpecificProfile(profileID)
     let id = profile._id
-    let profileAdministeredGroups = await Group.find({ adminID: id });
+    let profileAdministeredGroups = await Group.find({ adminId: id });
     return profileAdministeredGroups
 }
 

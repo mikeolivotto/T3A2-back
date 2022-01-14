@@ -104,6 +104,7 @@ routes.get("/unique", async (request, response) => {
 
 // GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
+  console.log("hit the profile/:id route <================")
   // verify the id token
   let userProfile = await tokenAuth(request.headers.authorization)
   console.log(userProfile)
@@ -114,7 +115,7 @@ routes.get("/:id", async (request, response) => {
     let games = await getGamesByProfile(request.params.id);
     let groups = await getJoinedGroupsByProfile(request.params.id)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
-
+  
     response.json([
       profileResult,
       games,
