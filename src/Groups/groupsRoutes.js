@@ -36,17 +36,20 @@ routes.post("/", async (request, response) => {
 
 // PUT - update group with member via joincode.
 routes.put("/join", async (request, response) => {
-    console.log("Hit group/join route <-------------------")
+    // Validate token and return error message if invalid
     let userProfile = await tokenAuth(request.headers.authorization);
     if (!userProfile) return response.json({message: "Invalid Credentials, Please sign-in"});
 
+    // Get group via joincode, return error if user is already a member of group
     let groupMatch = await getGroupByJoinCode(request.body.joinCode);
-    
+    if (groupMatch.members.includes(userProfile[0].username)) return response.json({message: "Error: You are already a member of this group"});
+
+    // if successful joinCode match, add username to members and update group, else could not find group error message.
     if (groupMatch) {
         let groupId = groupMatch._id;
-        groupMatch.members.push(String(userProfile[0]._id));
+        groupMatch.members.push(String(userProfile[0].username));
         let updatedGroup = await updateSpecificGroup(groupId,groupMatch);
-        response.json(updatedGroup);
+        response.json({groupId: groupId});
     } else {
         response.json({message: "Error: Could not find group using that join code"});
     }
