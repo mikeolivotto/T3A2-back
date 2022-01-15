@@ -6,6 +6,7 @@ const groupSchema = new mongoose.Schema({
     adminId: ObjectId,
     joinCode: String,
     members: Array,
+    pendingMembers: Array
 })
 
 const Group = mongoose.model("Groups", groupSchema)
