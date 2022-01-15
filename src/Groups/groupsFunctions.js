@@ -15,7 +15,8 @@ async function createNewGroup(queryData) {
         groupName: queryData.groupName,
         adminId: queryData.adminId,
         joinCode: queryData.joinCode,
-        members: queryData.members
+        members: queryData.members,
+        pendingMembers: queryData.pendingMembers
     })
 
     let newGroupResult = await newGroup.save();
