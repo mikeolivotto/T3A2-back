@@ -63,9 +63,11 @@ routes.get("/:id", async (request, response) => {
 
     let groupResult = await getSpecificGroup(request.params.id)
     let games = await getGamesByGroup(request.params.id)
- 
-    // // check if current user is admin || member, return group data
-    if ((groupResult.adminId.toString() === userProfile[0]._id.toString()) || groupResult.members.includes(userProfile[0]._id.toString())) {
+    let userId = userProfile[0]._id.toString()
+    let username = userProfile[0].username
+
+    // check if current user is member || pendingMember, return group data
+    if (groupResult.members.includes(username) || groupResult.pendingMembers.includes(username)) {
         response.json(groupResult);
     } else {
         response.json({message: "You are not authorised to get a group"})
@@ -84,9 +86,14 @@ routes.get("/:id/games", async (request, response) => {
 
 
 routes.put("/:id", async (request, response) => {
-    let updateResult = await updateSpecificGroup(request.params.id, request.body)
-    response.json({ message: `SUCCESS: PUT - group with id`,
-                    groupDetails: updateResult });
+    let groupResult = await getSpecificGroup(request.params.id)
+
+    console.log("put route working so far")
+    console.log(request.body)
+
+    // let updateResult = await updateSpecificGroup(request.params.id, request.body)
+    // response.json({ message: `SUCCESS: PUT - group with id`,
+    //                 groupDetails: updateResult });
 });
 
 
