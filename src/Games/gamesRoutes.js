@@ -16,39 +16,40 @@ routes.get("/", async (request, response) => {
   response.json(allGamesResults);
 });
 
-// Get Specific Game
-routes.get("/:id", async (request, response) => {
-  let userProfile = await tokenAuth(request.headers.bearer);
-  console.log(userProfile);
-
-  let specificGameResult = await getSpecificGame(request.params.id);
-
-  //check if user profile is included in players
-  if (specificGameResult.players.includes(userProfile[0]._id.toString())) {
-    response.json(specificGameResult);
-  } else {
-    response.json({ message: "You're not a player in this game" });
-  }
-});
 
 // Create New Game
 routes.post("/", async (request, response) => {
-  let userProfile = await tokenAuth(request.headers.bearer);
-  console.log(userProfile);
-
+  let userProfile = await tokenAuth(request.headers.authorization);
+  // console.log(userProfile);
+  
   // check if player is part of the group
   let specificGroup = await getSpecificGroup(request.body.groupId);
   console.log(specificGroup);
   if (
     specificGroup.members.includes(userProfile[0]._id.toString()) ||
     specificGroup.adminId.toString() === userProfile[0]._id.toString()
-  ) {
-    let newGameResult = await createNewGame(request.body);
-    response.json(newGameResult);
+    ) {
+      let newGameResult = await createNewGame(request.body);
+      response.json(newGameResult);
+    } else {
+      response.json({
+        message: "You cannot create a game, as you are not a part of the group",
+      });
+    }
+  });
+  
+// Get Specific Game
+routes.get("/:id", async (request, response) => {
+  console.log("========> Hit game/:id route <===========");
+  let userProfile = await tokenAuth(request.headers.authorization);
+
+  let specificGameResult = await getSpecificGame(request.params.id);
+  console.log(`Game Players: ${request.body} <============= Game result`)
+  //check if user profile is included in players
+  if (specificGameResult.players.includes(userProfile[0].username)) {
+    response.json(specificGameResult);
   } else {
-    response.json({
-      message: "You cannot create a game, as you are not a part of the group",
-    });
+    response.json({ message: "You're not a player in this game" });
   }
 });
 
