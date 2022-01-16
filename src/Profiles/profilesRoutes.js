@@ -9,6 +9,7 @@ const {
   signInUser,
   getAllProfiles,
   getGamesByProfile,
+  getPendingInvitesByProfile,
   tokenAuth,
   checkUnique
 } = require("./profilesFunctions"); 
@@ -117,12 +118,17 @@ routes.get("/:id", async (request, response) => {
     let games = await getGamesByProfile(userProfile[0].username);
     let groups = await getJoinedGroupsByProfile(request.params.id)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
+
+    console.log(userProfile[0].username)
+    let pendingInvites = await getPendingInvitesByProfile(userProfile[0].username)
+    // let pendingInvites ={lol: "lolz"}
   
     response.json([
       profileResult,
       games,
       groups, // groups user is a part of but NOT an admin
       adminOf, // groups user in admin of
+      pendingInvites
     ])
     // else send some kind of rejection
   } else {
