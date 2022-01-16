@@ -21,7 +21,9 @@ const createNewGame = async (requestBody) => {
         groupId: requestBody.groupId,
         gameRules: requestBody.gameRules,
         players: requestBody.players,
-        // datePlayed: requestBody.datePlayed
+        winner: requestBody.winner,
+        scoreBoard: requestBody.scoreBoard,
+        datePlayed: requestBody.datePlayed
     });
     let newGameResult = await newGame.save();
     return newGameResult;

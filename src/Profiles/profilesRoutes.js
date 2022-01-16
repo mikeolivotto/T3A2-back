@@ -115,7 +115,7 @@ routes.get("/:id", async (request, response) => {
   // if token verified, check the user id matches the parameter id to get profile data
   if (request.params.id === userProfile[0]._id.toString()) {
     let profileResult = await getSpecificProfile(request.params.id);
-    let games = await getGamesByProfile(request.params.id);
+    let games = await getGamesByProfile(userProfile[0].username);
     let groups = await getJoinedGroupsByProfile(request.params.id)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
 

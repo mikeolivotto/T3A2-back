@@ -61,11 +61,11 @@ async function getSpecificProfile(profileID) {
 }
 
 // returns array of games where the input profile is a player.
-async function getGamesByProfile(profileID) {
+async function getGamesByProfile(username) {
   // let profile = await getSpecificProfile(profileID)
   // let id = profile._id
-  let profileGames = await Game.find({ players: new ObjectId(profileID) }); // Find games where "players" includes the specific player
-  let gamesWon = await Game.find({ winner: new ObjectId(profileID) }) // Find games where winner includes specific player
+  let profileGames = await Game.find({ players: username }); // Find games where "players" includes the specific player
+  let gamesWon = await Game.find({ winner: username }) // Find games where winner includes specific player
   return {gamesPlayed: profileGames, gamesWon: gamesWon};
 }
 
