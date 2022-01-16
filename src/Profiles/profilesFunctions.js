@@ -69,6 +69,13 @@ async function getGamesByProfile(profileID) {
   return {gamesPlayed: profileGames, gamesWon: gamesWon};
 }
 
+async function getPendingInvitesByProfile(username) {
+  let pendingInvites = await Group.find({
+    pendingMembers: username
+  })
+  return pendingInvites
+}
+
 // async function gamesWon(profileID) {
 //   let profile = await getSpecificProfile(profileID)
 //   let id = profile._id
@@ -123,6 +130,7 @@ module.exports = {
   createNewProfile,
   getAllProfiles,
   getSpecificProfile,
+  getPendingInvitesByProfile,
   signUpUser,
   signInUser,
   getGamesByProfile,
