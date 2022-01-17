@@ -2,39 +2,42 @@ const {app} = require("../src/index")
 const request = require("supertest");
 const {setTestData, clearTestData} = require('./testHelpers')
 
-let testId
+// let testId
 
-beforeAll(async () => {
-  let testDataResponse = await setTestData()
-  testId = testDataResponse._id.valueOf()
+// beforeAll(async () => {
+//   let testDataResponse = await setTestData()
+//   testId = testDataResponse._id.valueOf()
   
-  return testDataResponse
-});
+//   return testDataResponse
+// });
 
 
-afterAll(() => {
-  clearTestData();
-});
+// afterAll(() => {
+//   clearTestData();
+// });
 
 
 
-describe('Profiles routes', function() {
+describe('CRUD', function() {
     it(' GET /profiles/ responds with json & status 200', function(done) {
       request(app)
         .get('/profiles')
         .expect('Content-Type', /json/)
         .expect(200, done);
-    });
-    it("GET /profiles/:id responds with json & status 200", (done) => {
-        request(app)
-            .get(`/profiles/${testId}`)
-            .expect('Content-Type', /json/)
-            .expect(200, {
-              _id: testId,
-              username: "blah",
-              firstName: "Testy",
-              lastName: "McTestFace",
-              __v: 0
-            }, done); 
-    })
+    }, 10000);
+
+    it(' GET /group/ responds with json & status 200', function(done) {
+      request(app)
+        .get('/group')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    },10000);
+
+    it(' GET /game/ responds with json & status 200', function(done) {
+      request(app)
+        .get('/game')
+        .expect('Content-Type', /json/)
+        .expect(200, done);
+    },10000);
+    
   });
