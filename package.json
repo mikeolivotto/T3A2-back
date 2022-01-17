@@ -4,7 +4,7 @@
   "description": "Back end",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest ./testing",
+    "test": "NODE_ENV=test jest ./testing --detectOpenHandles",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },

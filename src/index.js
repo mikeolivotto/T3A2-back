@@ -63,10 +63,11 @@ app.use("/group", importedGroupRouting);
 const importedGameRouting = require("./Games/gamesRoutes");
 app.use("/game", importedGameRouting);
 
-app.listen(PORT, HOST, () => {
+const server = app.listen(PORT, HOST, () => {
   console.log(`Server running on PORT: ${PORT}`);
 });
 
 module.exports = {
   app,
+  server
 };

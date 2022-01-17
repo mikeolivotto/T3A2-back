@@ -1,21 +1,46 @@
 const { Profile } = require('../src/database/schemas/profilesSchema');
-const {createNewProfile} = require('../src/Profiles/profilesFunctions')
+const firebaseAdmin = require("firebase-admin")
+const {createNewProfile, signUpUser, signInUser} = require('../src/Profiles/profilesFunctions');
+const mongoose = require('mongoose');
 
 const setTestData = async () => {
+    let signUpData = {
+        email: "supertesting6@email.com",
+        password: "testing"
+    }
+    let signUpResult = await signUpUser(signUpData)
+        .catch(err => console.log(err));
+
+    let signInResult = await signInUser(signUpData);
+
     let testProfile = {
-        userName: "blah",
+        username: "supertesting6",
         firstName: "Testy",
         lastName: "McTestFace",
-        // firebaseUserID: "yNR9dQYWZZMLDgAiw2cuSlO5g8r1"
+        firebaseUserID: signUpResult.uid
     }
 
-    let response = await createNewProfile(testProfile)
-    return response
+    let profileResult = await createNewProfile(testProfile)
+    // console.log(`${profileResult} < ============ profile result`)
+    return {
+        idToken: signInResult.idToken,
+        profileData: profileResult
+    }
 }
 
-const clearTestData = () => {
-    Profile.collection.drop()
+const logInTest = async () => {
+
+}
+
+const clearTestData = async (uid) => {
+    console.log(uid)
+    Profile.collection.drop();
+    firebaseAdmin.auth().deleteUser(uid);
 };
 
+const closeDbConnection = async () => {
+    return mongoose.connection.close()
+}
 
-module.exports = {setTestData, clearTestData}
+
+module.exports = {setTestData, clearTestData, logInTest, closeDbConnection}
