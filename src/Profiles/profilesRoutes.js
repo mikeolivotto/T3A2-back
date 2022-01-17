@@ -116,12 +116,11 @@ routes.get("/:id", async (request, response) => {
   if (request.params.id === userProfile[0]._id.toString()) {
     let profileResult = await getSpecificProfile(request.params.id);
     let games = await getGamesByProfile(userProfile[0].username);
-    let groups = await getJoinedGroupsByProfile(request.params.id)
+    let groups = await getJoinedGroupsByProfile(userProfile[0].username)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
 
     console.log(userProfile[0].username)
     let pendingInvites = await getPendingInvitesByProfile(userProfile[0].username)
-    // let pendingInvites ={lol: "lolz"}
   
     response.json([
       profileResult,
