@@ -86,14 +86,15 @@ routes.get("/:id/games", async (request, response) => {
 
 
 routes.put("/:id", async (request, response) => {
-    let groupResult = await getSpecificGroup(request.params.id)
+    
+    let groupResult = await updateSpecificGroup(request.params.id, request.body.groupDetails)
 
     console.log("put route working so far")
     console.log(request.body)
+ 
+    response.json({ message: `SUCCESS: PUT - group with id`,
+                    groupDetails: groupResult });
 
-    // let updateResult = await updateSpecificGroup(request.params.id, request.body)
-    // response.json({ message: `SUCCESS: PUT - group with id`,
-    //                 groupDetails: updateResult });
 });
 
 

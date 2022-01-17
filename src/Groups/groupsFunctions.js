@@ -53,10 +53,8 @@ async function deleteGroup(groupId) {
 }
 
 // returns array of groups where the input profile is a member.
-async function getJoinedGroupsByProfile(profileID) {
-    let profile = await getSpecificProfile(profileID)
-    let id = profile._id
-    let profileJoinedGroups = await Group.find({ members: id }); // Find Groups where "members" includes the specific profile
+async function getJoinedGroupsByProfile(username) {
+    let profileJoinedGroups = await Group.find({ members: username }); // Find Groups where "members" includes the specific member
     return profileJoinedGroups
 }
 
