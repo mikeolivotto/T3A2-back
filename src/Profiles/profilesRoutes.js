@@ -20,7 +20,6 @@ const routes = express.Router();
 
 // SIGN UP - NB: FRONT END MUST REQUEST userName, firstName, lastName
 routes.post("/sign-up", async (request, response) => {
-  console.log("hit /sign-up route <-------------")
   let signUpDetails = {
     email: request.body.email,
     password: request.body.password,
@@ -73,7 +72,6 @@ routes.post("/sign-in", async (request, response) => {
   let signInResult = await signInUser(existingProfileDetail);
   
   // uses admin sdk to decode idToken JWT that is returned from signInUser and query database for profile matching uid
-  console.log("checking token Validity")
   let userProfile = await tokenAuth(signInResult.idToken)
 
   if(userProfile) {
@@ -94,9 +92,8 @@ routes.get("/", async (request, response) => {
 
 // GET a boolean response based on uniqueness of input username
 routes.get("/unique", async (request, response) => {
-  console.log("Hit /unique route <-----------------")
   let username = request.body.username;
-  console.log(username)
+
   let unique = await checkUnique(username)
   if (unique) {
     response.json({unique: true})
@@ -107,7 +104,6 @@ routes.get("/unique", async (request, response) => {
 
 // GET A SPECIFIC PROFILE
 routes.get("/:id", async (request, response) => {
-  console.log("hit the profile/:id route <================")
   // verify the id token
   let userProfile = await tokenAuth(request.headers.authorization)
   console.log(userProfile)
@@ -119,7 +115,6 @@ routes.get("/:id", async (request, response) => {
     let groups = await getJoinedGroupsByProfile(userProfile[0].username)
     let adminOf = await getAdminGroupsByProfile(request.params.id)
 
-    console.log(userProfile[0].username)
     let pendingInvites = await getPendingInvitesByProfile(userProfile[0].username)
   
     response.json([

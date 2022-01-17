@@ -6,9 +6,7 @@ let testId
 
 beforeAll(async () => {
   let testDataResponse = await setTestData()
-  // let {_id} = testDataResponse
   testId = testDataResponse._id.valueOf()
-  console.log(testDataResponse._id.valueOf())
   
   return testDataResponse
 });
@@ -17,30 +15,6 @@ beforeAll(async () => {
 afterAll(() => {
   clearTestData();
 });
-
-// PROFILES ROUTES to test:
-// POST /profiles/sign-up
-// POST /profiles/sign-in
-// GET /
-// POST /
-// GET /:id
-// PUT /:id
-// DELETE /:id (not MVP)
-
-
-// GROUPS ROUTES to test:
-// GET /
-// GET /:id
-// POST /
-// PUT /:id
-// DELETE /:id (not MVP)
-
-// GAMES ROUTES to test:
-// GET /
-// GET /:id
-// POST /
-// PUT /:id
-// DELETE /:id (not MVP)
 
 
 

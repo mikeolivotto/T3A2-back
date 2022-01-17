@@ -31,7 +31,6 @@ async function getAllProfiles() {
 }
 
 async function createNewProfile(queryData) {
-  console.log(queryData)
   let newProfile = new Profile({
     username: queryData.username,
     firstName: queryData.firstName || null,
@@ -95,7 +94,6 @@ async function signInUser(queryData) {
     let userIdToken = await firebaseClientAuth.currentUser.getIdTokenResult(
       false
     );
-    // console.log(`userIdToken is \n ${JSON.stringify(userIdToken)}`);
     return {
       idToken: userIdToken.token,
       refreshToken: userCredential.user.token,

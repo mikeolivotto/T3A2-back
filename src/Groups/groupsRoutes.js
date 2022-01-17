@@ -26,7 +26,6 @@ routes.post("/", async (request, response) => {
     // check admin id passed in from react state === auth user id
     if (request.body.adminId === userProfile[0]._id.toString()){
         let newGroup = await createNewGroup(request.body)
-        console.log(`Join Token of new group = ${newGroup.joinCode}`)
         response.json(newGroup);
     } else {
         response.json({message: "You are not authorised to create a group"})
@@ -59,7 +58,6 @@ routes.put("/join", async (request, response) => {
 routes.get("/:id", async (request, response) => {
     // get specific group only if you belong to that group
     let userProfile = await tokenAuth(request.headers.authorization)
-    console.log(userProfile)
 
     let groupResult = await getSpecificGroup(request.params.id)
     let games = await getGamesByGroup(request.params.id)
@@ -76,8 +74,6 @@ routes.get("/:id", async (request, response) => {
 
 routes.get("/:id/games", async (request, response) => {
     // get specific group only if you belong to that group
-    // let userProfile = await tokenAuth(request.headers.authorization)
-    // console.log(userProfile)
 
     let games = await getGamesByGroup(request.params.id)
     response.json(games);
@@ -89,8 +85,6 @@ routes.put("/:id", async (request, response) => {
     
     let groupResult = await updateSpecificGroup(request.params.id, request.body.groupDetails)
 
-    console.log("put route working so far")
-    console.log(request.body)
  
     response.json({ message: `SUCCESS: PUT - group with id`,
                     groupDetails: groupResult });

@@ -20,14 +20,12 @@ routes.get("/", async (request, response) => {
 // Create New Game
 routes.post("/", async (request, response) => {
   let userProfile = await tokenAuth(request.headers.authorization);
-  // console.log(userProfile);
   
   // check if player is part of the group
   let specificGroup = await getSpecificGroup(request.body.groupId);
-  console.log(specificGroup);
   if (
-    specificGroup.members.includes(userProfile[0]._id.toString()) ||
-    specificGroup.adminId.toString() === userProfile[0]._id.toString()
+    // specificGroup.members.includes(userProfile[0]._id.toString()) || specificGroup.adminId.toString() === userProfile[0]._id.toString()
+    specificGroup.members.includes(userProfile[0].username)
     ) {
       let newGameResult = await createNewGame(request.body);
       response.json(newGameResult);
@@ -40,11 +38,10 @@ routes.post("/", async (request, response) => {
   
 // Get Specific Game
 routes.get("/:id", async (request, response) => {
-  console.log("========> Hit game/:id route <===========");
   let userProfile = await tokenAuth(request.headers.authorization);
 
   let specificGameResult = await getSpecificGame(request.params.id);
-  console.log(`Game Players: ${request.body} <============= Game result`)
+  
   //check if user profile is included in players
   if (specificGameResult.players.includes(userProfile[0].username)) {
     response.json(specificGameResult);
