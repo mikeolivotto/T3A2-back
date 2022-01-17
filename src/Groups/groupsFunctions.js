@@ -36,8 +36,6 @@ async function getGamesByGroup(groupID) {
 }
 
 async function updateSpecificGroup(groupId, requestBody) {
-    console.log(groupId)
-    console.log(requestBody)
     let updatedGroup = await Group.updateOne(
         // find the group with the Group ID in the query data
         { _id: groupId },
@@ -73,7 +71,6 @@ async function getGroupByJoinCode(joinCode) {
 
 async function checkJoinCodeUnique(joinCode) {
     let joinCodeMatch = await Group.find({joinCode: joinCode});
-    console.log(`${joinCodeMatch} <----------------------`)
     return (joinCodeMatch.length === 0) ? true : false;
 }
 
