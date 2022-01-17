@@ -1,22 +1,5 @@
 const {app} = require("../src/index")
 const request = require("supertest");
-const {setTestData, clearTestData} = require('./testHelpers')
-
-// let testId
-
-// beforeAll(async () => {
-//   let testDataResponse = await setTestData()
-//   testId = testDataResponse._id.valueOf()
-  
-//   return testDataResponse
-// });
-
-
-// afterAll(() => {
-//   clearTestData();
-// });
-
-
 
 describe('CRUD', function() {
     it(' GET /profiles/ responds with json & status 200', function(done) {
